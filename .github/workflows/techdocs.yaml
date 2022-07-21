@@ -17,8 +17,8 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
         with:
-          # User service name for repo clone here
-          repository: 'skopecky-test/example-service'
+          # Use operate-first here
+          repository: 'skopecky-test/${{ github.event.client_payload.directory }}'
       
       - name: Setup node
         uses: actions/setup-node@v2
@@ -51,9 +51,12 @@ jobs:
 
       - name: Generate docs site
         run: techdocs-cli generate --no-docker --verbose
+        working-directory: ./${{ github.event.client_payload.directory }}
 
       - name: check docs
         run: tree
+        working-directory: ./${{ github.event.client_payload.directory }}
 
       - name: Publish docs site
         run: techdocs-cli publish --publisher-type awsS3 --storage-name $BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity default/Component/$SERVICE
+        working-directory: ./${{ github.event.client_payload.directory }}
