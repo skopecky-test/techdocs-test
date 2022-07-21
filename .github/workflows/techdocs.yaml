@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           # Use operate-first here
-          repository: 'skopecky-test/${{ github.event.client_payload.directory }}'
+          repository: 'skopecky-test/${{ github.event.client_payload.repository }}'
       
       - name: Setup node
         uses: actions/setup-node@v2
@@ -38,7 +38,7 @@ jobs:
           echo "be498123d20eaea95a94b174d770ef94adfdca18  plantuml.jar" | sha1sum -c -
           mv plantuml.jar /opt/plantuml.jar
           mkdir -p "$HOME/.local/bin"
-          echo $'#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> "$HOME/.local/bin/plantuml"
+          echo $'#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >>  "$HOME/.local/bin/plantuml"
           chmod +x "$HOME/.local/bin/plantuml"
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           sudo apt-get install -y graphviz
