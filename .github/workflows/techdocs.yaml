@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SERVICE: ${{ github.event.client_payload.service }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ENDPOINT: ${{ secret.AWS_ENDPOINT }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -40,7 +44,7 @@ jobs:
           sudo apt-get install -y graphviz
 
       - name: Install techdocs-cli
-        run: sudo npm install -g @techdocs/cli
+        run: sudo npm install --location=global @techdocs/cli
 
       - name: Install mkdocs and mkdocs plugins
         run: python -m pip install mkdocs-techdocs-core==1.*
@@ -50,4 +54,7 @@ jobs:
 
       - name: check docs
         run: tree
+
+      - name: Publish docs site
+        run: techdocs-cli publish --publisher-type awsS3 --storage-name $BUCKET_NAME --entity default/Component/$SERVICE
 
