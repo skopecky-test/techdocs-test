@@ -1,0 +1,13 @@
+name: Publish TechDocs Site
+
+on:
+  repository_dispatch:
+    types: [docs-update]
+
+jobs:
+  run_if_failure:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          MESSAGE: ${{ github.event.client_payload.service }}
+        run: echo $MESSAGE
