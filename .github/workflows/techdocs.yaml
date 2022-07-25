@@ -5,20 +5,18 @@ on:
     types: [docs-update]
 
 jobs:
-  publish:
+  generate-and-publish:
     runs-on: ubuntu-latest
     env:
-      SERVICE: ${{ github.event.client_payload.service }}
       BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_ENDPOINT: https://s3-openshift-storage.apps.smaug.na.operate-first.cloud
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
         with:
-          # Use operate-first here
-          repository: 'skopecky-test/${{ github.event.client_payload.repository }}'
+          repository: '${{ github.event.client_payload.repository }}'
       
       - name: Setup node
         uses: actions/setup-node@v2
@@ -51,12 +49,8 @@ jobs:
 
       - name: Generate docs site
         run: techdocs-cli generate --no-docker --verbose
-        working-directory: ./${{ github.event.client_payload.directory }}
-
-      - name: check docs
-        run: tree
-        working-directory: ./${{ github.event.client_payload.directory }}
+        working-directory: ./${{ github.event.client_payload.docs_path }}
 
       - name: Publish docs site
-        run: techdocs-cli publish --publisher-type awsS3 --storage-name $BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity default/Component/$SERVICE
-        working-directory: ./${{ github.event.client_payload.directory }}
+        working-directory: ./${{ github.event.client_payload.docs_path }}
+        run: techdocs-cli publish --publisher-type awsS3 --storage-name $BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity default/Component/${{ github.event.client_payload.entity }}
