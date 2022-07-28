@@ -48,9 +48,17 @@ jobs:
         run: python -m pip install mkdocs-techdocs-core==1.*
 
       - name: Generate docs site
+        working-directory: ${{ github.event.client_payload.docs_path }}
         run: techdocs-cli generate --no-docker --verbose
-        working-directory: ./${{ github.event.client_payload.docs_path }}
 
       - name: Publish docs site
-        working-directory: ./${{ github.event.client_payload.docs_path }}
-        run: techdocs-cli publish --publisher-type awsS3 --storage-name $BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity default/Component/${{ github.event.client_payload.entity }}
+        working-directory: ${{ github.event.client_payload.docs_path }}
+        run: | 
+          techdocs-cli publish 
+            --publisher-type awsS3 \
+            --storage-name $BUCKET_NAME \
+            --awsEndpoint $AWS_ENDPOINT \
+            --awsS3ForcePathStyle \
+            --entity ${{ github.event.client_payload.entity_namespace }} \
+                    /${{ github.event.client_payload.entity_kind }} \
+                    /${{ github.event.client_payload.entity_name }}
