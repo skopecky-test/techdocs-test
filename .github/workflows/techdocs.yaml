@@ -54,7 +54,7 @@ jobs:
       - name: Publish docs site
         working-directory: ${{ github.event.client_payload.docs_path }}
         run: | 
-          techdocs-cli publish 
+          techdocs-cli publish \
             --publisher-type awsS3 \
             --storage-name $BUCKET_NAME \
             --awsEndpoint $AWS_ENDPOINT \
