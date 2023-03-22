@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAMEa }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_IDa }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: ${{ secrets.AWS_REGIONa }}
       ENTITY_NAMESPACE: "default"
       ENTITY_KIND: "Component"
       ENTITY_NAME: "backstage-showcase"
@@ -37,4 +37,4 @@ jobs:
         run: techdocs-cli generate --no-docker --verbose
 
       - name: Publish docs site
-        run: techdocs-cli publish --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME
+        run: techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
