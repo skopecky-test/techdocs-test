@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAMEa }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_IDa }}
+      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGIONa }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
       ENTITY_NAMESPACE: "default"
       ENTITY_KIND: "Component"
       ENTITY_NAME: "backstage-showcase"
